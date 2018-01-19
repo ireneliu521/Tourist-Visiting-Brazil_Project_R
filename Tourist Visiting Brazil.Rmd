@@ -1,0 +1,87 @@
+---
+title: "Tourist-Visiting-Brazil"
+output: html_document
+---
+
+library(zoo)
+library(forecast)
+library(ggplot2)
+
+tourist.data = read.csv("touristData.csv")
+summary(tourist.data) # some counts are 0. 
+nrow(tourist.data)
+```
+
+```{r}
+df.cleandata = na.omit(tourist.data)
+df.cleandata = tourist.data[tourist.data$Count !=0,]
+plot(df.cleandata$Year, df.cleandata$Count)
+nrow(df.cleandata)
+```
+
+```{r}
+df.cleandata$Month <- as.character(df.cleandata$Month)
+df.cleandata$Month[df.cleandata$Month == "janeiro"] <- "01"
+df.cleandata$Month[df.cleandata$Month == "fevereiro"] <- "02"
+df.cleandata$Month[df.cleandata$Month == "mar\xe7o"] <- "03"
+df.cleandata$Month[df.cleandata$Month == "abril"] <- "04"
+df.cleandata$Month[df.cleandata$Month == "maio"] <- "05"
+df.cleandata$Month[df.cleandata$Month == "junho"] <- "06"
+df.cleandata$Month[df.cleandata$Month == "julho"] <- "07"
+df.cleandata$Month[df.cleandata$Month == "agosto"] <- "08"
+df.cleandata$Month[df.cleandata$Month == "setembro"] <- "09"
+df.cleandata$Month[df.cleandata$Month == "outubro"] <- "10"
+df.cleandata$Month[df.cleandata$Month == "novembro"] <- "11"
+df.cleandata$Month[df.cleandata$Month == "dezembro"] <- "12"
+
+df.cleandata$Month <- as.factor(df.cleandata$Month)
+
+sortdata <- with(df.cleandata, aggregate(Count, list(Month = Month, Year = Year), sum)) #Sort by month, aggregate on monthly and yearly level
+
+```{r}
+count=sortdata$x
+ts_data=ts(count,start = c(1989,1),end = c(2015,12),frequency = 12)
+plot(ts_data)
+plot(diff(ts_data,12)
+
+```{r}
+adf.test(ts_data,12)
+kpss.test(ts_data,12)
+adf.test(diff(ts_data,12))
+kpss.test(diff(ts_data,12))
+
+diff.ts_data<-diff(ts_data,12)
+
+```{r}
+tsdisplay(diff.ts_data)
+#seasoanl=(1,0,1)/(2,0,1)
+#order=(1,0,2)/(1,0,4)/(2,0,4)
+
+fit <- Arima(diff.ts_data, order=c(1,0,2), seasonal=c(1,0,1))
+fit2 <- Arima(diff.ts_data, order=c(1,0,4), seasonal=c(1,0,1))
+fit3 <- Arima(diff.ts_data, order=c(2,0,4), seasonal=c(1,0,1))
+fit4 <- Arima(diff.ts_data, order=c(1,0,2), seasonal=c(2,0,1))
+fit5 <- Arima(diff.ts_data, order=c(1,0,4), seasonal=c(2,0,1))
+fit6 <- Arima(diff.ts_data, order=c(2,0,4), seasonal=c(2,0,1))
+summary(fit)
+summary(fit2)
+summary(fit3)
+summary(fit4)
+summary(fit5)
+summary(fit6)
+#fit6 has the smallest AICc = 7802.92
+
+```{r}
+fit7 <- auto.arima(diff.ts_data)
+summary(fit7)
+#auto arima suggests (1,0,0)(0,0,1), AICc = 7816.78, which is larger than fit6
+
+```{r}
+res<-residuals(fit6)
+tsdisplay(res)
+Box.test(res, lag=36, fitdf=9, type="Ljung")
+
+```{r}
+fcast<-forecast(fit6,h=12)
+plot(fcast)
+fcast
