@@ -398,3 +398,5 @@ fcast
     ## Oct 2016      -3089.455 -104947.49  98768.576 -158867.8709 152688.960
     ## Nov 2016     -38835.442 -141222.91  63552.027 -195423.5623 117752.679
     ## Dec 2016      -3513.328 -106245.60  99218.940 -160628.7729 153602.117
+
+Based on our best model, we were able to forecast the numbers of tourist visiting Brazil in the future 12 months, which is shown in figure 3 below. However, when we look at the actual data, we found that the number of visitors boosted in 2016 because of the Olympic Game held in Rio. It tells us that when we are doing the forecasting, we need to take special events into our consideration.
