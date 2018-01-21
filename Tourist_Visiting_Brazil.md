@@ -64,7 +64,7 @@ df.cleandata = tourist.data[tourist.data$Count !=0,]
 plot(df.cleandata$Year, df.cleandata$Count)
 ```
 
-![](Tourist_Visiting_Brazil_files/figure-markdown_github/unnamed-chunk-2-1.png)
+Please refer to the Numbers of Tourists by Year chart.
 
 ``` r
 nrow(df.cleandata)
@@ -108,13 +108,13 @@ ts_data=ts(count,start = c(1989,1),end = c(2015,12),frequency = 12)
 plot(ts_data)
 ```
 
-![](Tourist_Visiting_Brazil_files/figure-markdown_github/unnamed-chunk-4-1.png)
+Please refer to the Time Series Data Plot.
 
 ``` r
 plot(diff(ts_data,12))
 ```
 
-![](Tourist_Visiting_Brazil_files/figure-markdown_github/unnamed-chunk-4-2.png)
+Please refer to the Time Series Data Plot After Take One Diff.
 
 ``` r
 adf.test(ts_data)
@@ -176,8 +176,7 @@ SARIMA Model
 ``` r
 tsdisplay(diff.ts_data)
 ```
-
-![](Tourist_Visiting_Brazil_files/figure-markdown_github/unnamed-chunk-5-1.png)
+Please refer to the Time Series Data Display chart.
 
 ``` r
 #seasoanl=(1,0,1)/(2,0,1)
@@ -360,8 +359,7 @@ summary(fit7)
 res<-residuals(fit6)
 tsdisplay(res)
 ```
-
-![](Tourist_Visiting_Brazil_files/figure-markdown_github/unnamed-chunk-7-1.png)
+Please refer to the Residual Display chart.
 
 ``` r
 Box.test(res, lag=36, fitdf=9, type="Ljung")
@@ -381,7 +379,7 @@ fcast<-forecast(fit6,h=12)
 plot(fcast)
 ```
 
-![](Tourist_Visiting_Brazil_files/figure-markdown_github/unnamed-chunk-8-1.png)
+Please refer to the Forecast Plot.
 
 ``` r
 fcast
